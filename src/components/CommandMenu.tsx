@@ -4,6 +4,17 @@ import type { Info } from "@/data/content";
 
 type Item = { id: string; label: string; action: () => void; group: string };
 
+function pdfResponse(bytes: Uint8Array, filename: string) {
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  return new Response(blob, {
+    headers: {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="${filename}"`,
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
 export function CommandMenu({
   isDark,
   info,

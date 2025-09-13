@@ -1,4 +1,4 @@
-// app/api/cv.pdf/route.tsx
+
 import type { NextRequest } from 'next/server';
 import { Document, Page, Text, View, StyleSheet, pdf, Font } from '@react-pdf/renderer';
 import { getInfo, UI } from '@/data/content';
@@ -6,7 +6,7 @@ import { getInfo, UI } from '@/data/content';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-// Minimal readable type (no Node typings)
+
 type ReadableLike = {
   on(event: 'data', cb: (chunk: unknown) => void): void;
   on(event: 'end', cb: () => void): void;
@@ -27,12 +27,11 @@ export async function GET(req: NextRequest) {
   const lang = (searchParams.get('lang') === 'bg' ? 'bg' : 'en') as 'en' | 'bg';
   const theme = (searchParams.get('theme') === 'dark' ? 'dark' : 'light') as 'light' | 'dark';
 
-  // IMPORTANT: use plain TTFs, not variable fonts, and correct public path
-  // Your files are in: public/shots/fonts/...
-  const regularUrl = new URL('/shots/fonts/NotoSans-Light.ttf', req.url).toString();
-  const boldUrl    = new URL('/shots/fonts/NotoSans-Light.ttf', req.url).toString(); // reuse for bold for now
 
-  // Register family (no "format" prop — not in types)
+  const regularUrl = new URL('/shots/fonts/NotoSans-Light.ttf', req.url).toString();
+  const boldUrl    = new URL('/shots/fonts/NotoSans-Light.ttf', req.url).toString();
+
+
   Font.register({
     family: 'NotoSans',
     fonts: [
@@ -144,7 +143,6 @@ export async function GET(req: NextRequest) {
     </Document>
   );
 
-  // Render -> bytes (Blob preferred; safe fallbacks)
   const instance = pdf(Doc);
 
   const toBlob = (instance as unknown as { toBlob?: () => Promise<Blob> }).toBlob;
